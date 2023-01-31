@@ -11,7 +11,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -61,7 +61,7 @@ public class Robot extends TimedRobot {
    * mode (switch set to X on the bottom) or a different controller
    * that you feel is more comfortable.
    */
-  Joystick j = new Joystick(0);
+  XboxController j = new XboxController(0);
 
   /*
    * Magic numbers. Use these to adjust settings.
@@ -292,10 +292,10 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     double armPower;
-    if (j.getRawButton(7)) {
+    if (j.getAButton()) {
       // lower the arm
       armPower = -ARM_OUTPUT_POWER;
-    } else if (j.getRawButton(5)) {
+    } else if (j.getBButton()) {
       // raise the arm
       armPower = ARM_OUTPUT_POWER;
     } else {
@@ -306,12 +306,12 @@ public class Robot extends TimedRobot {
   
     double intakePower;
     int intakeAmps;
-    if (j.getRawButton(8)) {
+    if (j.getXButton()) {
       // cube in or cone out
       intakePower = INTAKE_OUTPUT_POWER;
       intakeAmps = INTAKE_CURRENT_LIMIT_A;
       lastGamePiece = CUBE;
-    } else if (j.getRawButton(6)) {
+    } else if (j.getYButton()) {
       // cone in or cube out
       intakePower = -INTAKE_OUTPUT_POWER;
       intakeAmps = INTAKE_CURRENT_LIMIT_A;
@@ -332,6 +332,6 @@ public class Robot extends TimedRobot {
      * Negative signs here because the values from the analog sticks are backwards
      * from what we want. Forward returns a negative when we want it positive.
      */
-    setDriveMotors(-j.getRawAxis(1), -j.getRawAxis(2));
+    setDriveMotors(-j.getLeftY(), j.getRightX());
   }
 }
